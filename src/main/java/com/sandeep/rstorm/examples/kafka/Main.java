@@ -1,11 +1,10 @@
 package com.sandeep.rstorm.examples.kafka;
 
-import backtype.storm.Config;
-import backtype.storm.LocalCluster;
-import backtype.storm.spout.SchemeAsMultiScheme;
-import backtype.storm.topology.TopologyBuilder;
-import scala.Product;
-import storm.kafka.*;
+import org.apache.storm.Config;
+import org.apache.storm.LocalCluster;
+import org.apache.storm.kafka.*;
+import org.apache.storm.spout.SchemeAsMultiScheme;
+import org.apache.storm.topology.TopologyBuilder;
 
 import java.util.UUID;
 
