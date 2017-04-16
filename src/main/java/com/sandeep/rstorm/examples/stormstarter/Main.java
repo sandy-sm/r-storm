@@ -3,6 +3,7 @@ package com.sandeep.rstorm.examples.stormstarter;
 
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
+import org.apache.storm.StormSubmitter;
 import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.tuple.Fields;
 
@@ -32,7 +33,13 @@ public class Main {
         topologyBuilder.setBolt("count", wordCountBolt).fieldsGrouping("split", new Fields("word"));
 
         //StormSubmitter.submitTopology("spout-bolt", map, topologyBuilder.createTopology());
-        LocalCluster cluster = new LocalCluster();
-        cluster.submitTopology("word-count", config, topologyBuilder.createTopology());
+        //LocalCluster cluster = new LocalCluster();
+        //cluster.submitTopology("word-count", config, topologyBuilder.createTopology());
+
+        try {
+            StormSubmitter.submitTopology("word-count", config, topologyBuilder.createTopology());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 }
