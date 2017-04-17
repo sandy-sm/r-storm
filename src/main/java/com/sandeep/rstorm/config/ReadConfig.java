@@ -17,6 +17,7 @@ public class ReadConfig {
 
   //Application properties keys
   public static final String R_SCRIPT_PATH = "r_script_path";
+  public static final String R_MULTILANG_SCRIPT_PATH = "r_multilang_script";
   public static final String R_SCRIPT_METHOD = "r_script_method";
   public static final String R_ENGINE_HOST = "r_engine_host";
   public static final String R_ENGINE_PORT = "r_engine_port";

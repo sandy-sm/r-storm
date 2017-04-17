@@ -24,26 +24,28 @@ public class RNativeExecutor implements RExecutor {
 
   @Override
   public void initializeScript(String path) {
-    File file = new File(RStormConstants.R_SCRIPT_IMAGE_LOCATION);
+    File imageFile = new File(RStormConstants.R_SCRIPT_IMAGE_LOCATION);
 
-    if (!file.exists()) {
+
+    if (!imageFile.exists()) {
       logger.info("Starting REngine to initialize RData...");
 
       long startTime = System.currentTimeMillis();
-      String startupScriptPath = file.getAbsolutePath();
+      File rScriptfile = new File(RStormConstants.R_STARTUP_SCRIPT_LOCATION);
+      logger.info("Getting absolute path of initializer script {}", imageFile.getAbsolutePath());
 
-      file = new File(RStormConstants.R_STARTUP_SCRIPT_LOCATION);
-      logger.info("Getting absolute path of initializer script {}", file.getAbsolutePath());
-
-      rengine.eval("source(file=\"" + file.getAbsolutePath() + "\");");
+      rengine.eval("source(file=\"" + rScriptfile.getAbsolutePath() + "\");");
       logger.info("Execution took {} secs", (System.currentTimeMillis() - startTime) / 1000);
-      rengine.eval("save.image(file=\"" + file.getAbsolutePath() + "\");");
-      logger.info("Rscript Image saved!");
       Utils.sleep(3000);
+
+      logger.info("Saving.. Rscript Image @ {}", imageFile.getAbsolutePath());
+      rengine.eval("save.image(file=\"" + imageFile.getAbsolutePath() + "\");");
+
+      logger.info("Rscript Image saved!");
     }
 
-    logger.info("Loading R Image file {}", file.getAbsolutePath());
-    String loadFileCommand = "load(file = \""+file.getAbsolutePath()+"\")";
+    logger.info("Loading R Image file {}", imageFile.getAbsolutePath());
+    String loadFileCommand = "load(file = \""+imageFile.getAbsolutePath()+"\")";
     logger.debug("R Loadfile command {}", loadFileCommand);
 
     rengine.eval(loadFileCommand);

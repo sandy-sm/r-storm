@@ -7,7 +7,7 @@ public interface RStormConstants {
 
   public static final String R_DEFAULT_PORT = "6311";
   public static final String R_STARTUP_SCRIPT_LOCATION = "src/main/resources/SpamDetector.R";
-  public static final String R_SCRIPT_IMAGE_LOCATION = "src/main/resources/img.RData";
+  public static final String R_SCRIPT_IMAGE_LOCATION = "src/main/resources/image.RData";
 
   public static final String R_SCRIPT_MULTI_LANG_COMMAND = "Rscript";
   public static final String R_SCRIPT_MULTI_LANG_SCRIPT = "script.R";

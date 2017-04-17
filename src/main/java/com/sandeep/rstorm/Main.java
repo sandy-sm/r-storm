@@ -40,7 +40,8 @@ public class Main {
 
       if (RExecutorEnum.valueOf(boltExecutor).ordinal() == RExecutorEnum.MultiLang.ordinal()) {
         logger.info("Initializing RMultiLangBolt...");
-        rExecutorBolt = new RMultiLangExecutorBolt(ReadConfig.properties.getProperty("r_multilang_script"));
+        rExecutorBolt = new RMultiLangExecutorBolt(ReadConfig.properties
+          .getProperty(ReadConfig.R_MULTILANG_SCRIPT_PATH));
       } else {
         logger.info("Initializing R Bolt...");
         rExecutorBolt = new RExecutorBolt();
@@ -57,7 +58,9 @@ public class Main {
         .globalGrouping("r-storm-kafka-spout");
 
       topologyBuilder.setBolt("r-storm-sink-bolt", sinkBolt)
-        .fieldsGrouping("r-storm-executor-bolt", new Fields(RStormConstants.STORM_SINK_BOLT_FIELD, ReadConfig.properties.getProperty(ReadConfig.STORM_SINK_BOLT_CONFIG)));
+        .fieldsGrouping("r-storm-executor-bolt",
+          new Fields(RStormConstants.STORM_SINK_BOLT_FIELD,
+            ReadConfig.properties.getProperty(ReadConfig.STORM_SINK_BOLT_CONFIG)));
 
       try {
         logger.info("Submitting storm topology...");

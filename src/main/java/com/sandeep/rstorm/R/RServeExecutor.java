@@ -34,22 +34,26 @@ public class RServeExecutor implements RExecutor {
 
   @Override
   public void initializeScript(String path) {
-    File file = new File(RStormConstants.R_SCRIPT_IMAGE_LOCATION);
+    File imageFile = new File(RStormConstants.R_SCRIPT_IMAGE_LOCATION);
 
-    if (!file.exists()) {
+    if (!imageFile.exists()) {
       logger.info("Starting REngine to initialize RData...");
 
       long startTime = System.currentTimeMillis();
-      String startupScriptPath = file.getAbsolutePath();
+      String imageFileAbsolutePath = imageFile.getAbsolutePath();
 
-      file = new File(RStormConstants.R_STARTUP_SCRIPT_LOCATION);
-      logger.info("Getting absolute path of initializer script {}", file.getAbsolutePath());
+      File scriptFile = new File(RStormConstants.R_STARTUP_SCRIPT_LOCATION);
+      logger.info("Getting absolute path of initializer script {}", imageFile.getAbsolutePath());
 
       try {
-        connection.eval("source(file=\""+ file.getAbsolutePath()+"\");");
+        connection.eval("source(file=\""+ scriptFile.getAbsolutePath()+"\");");
         logger.info("Execution took {} secs", (System.currentTimeMillis() - startTime)/1000);
-        connection.eval("save.image(file=\""+file.getAbsolutePath()+"\");");
+        Utils.sleep(3000);
 
+        logger.info("Saving.. Rscript Image @ {}", imageFileAbsolutePath);
+        connection.eval("save.image(file=\""+imageFileAbsolutePath+"\");");
+
+        logger.info("Rscript Image saved!");
         Utils.sleep(3000);
       } catch (RserveException e) {
         throw new RStormException("Could not execute startup script!");
@@ -59,8 +63,8 @@ public class RServeExecutor implements RExecutor {
     }
 
     try {
-      logger.info("Loading R Image file {}", file.getAbsolutePath());
-      String loadFileCommand = "load(file = \""+file.getAbsolutePath()+"\")";
+      logger.info("Loading R Image file {}", imageFile.getAbsolutePath());
+      String loadFileCommand = "load(file = \""+imageFile.getAbsolutePath()+"\")";
       logger.debug("R Loadfile command {}", loadFileCommand);
       connection.eval(loadFileCommand);
     } catch (RserveException e) {
